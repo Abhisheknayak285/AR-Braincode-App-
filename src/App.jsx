@@ -980,5 +980,5 @@ export default function App() {
     </div>
   `;
 
-  return <div dangerouslySetInnerHTML={{ __html: rawHTML }} />;
+  return <div className="h-full w-full flex flex-col" dangerouslySetInnerHTML={{ __html: rawHTML }} />;
 }
