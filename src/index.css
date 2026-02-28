@@ -8,20 +8,29 @@ body {
     overscroll-behavior-y: none;
     background-color: #000;
 }
+
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(0,0,0,0.05); }
 .dark .glass { background: rgba(10, 10, 10, 0.75); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+
 .card-glass { background: #ffffff; border: 1px solid #e4e4e7; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
 .dark .card-glass { background: #121212; border: 1px solid #27272a; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5); }
+
 .video-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; background: #000; }
 .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+
 #app-wrapper { max-width: 480px; margin: 0 auto; height: 100%; position: relative; overflow: hidden; background-color: inherit; }
-.dark #app-wrapper { border-left: 1px solid #27272a; border-right: 1px solid #27272a; }
+/* Border hata diya gaya hai taaki wo patli lines na aayein */
+.dark #app-wrapper { border: none; }
+
 #toast-container { position: fixed; top: calc(env(safe-area-inset-top) + 20px); left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 8px; width: 90%; max-width: 400px; pointer-events: none; }
 .toast { pointer-events: auto; animation: slideDown 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; transition: all 0.25s ease; }
 @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
 .page-enter { animation: fadeIn 0.2s ease-out forwards; }
+
 .input-native { width: 100%; padding: 16px 16px; border-radius: 14px; font-size: 16px; outline: none; transition: border-color 0.2s, background-color 0.2s; border: 1px solid transparent; }
 .light .input-native { background: #f4f4f5; color: #18181b; }
 .dark .input-native { background: #1c1c1e; color: #fafafa; }
