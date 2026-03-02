@@ -122,7 +122,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <div class="flex items-center gap-1.5 font-bold bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-lg border border-blue-500/20 shadow-sm">
+                            <div onclick="window.openXpHistory()" class="cursor-pointer flex items-center gap-1.5 font-bold bg-blue-500/10 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-lg border border-blue-500/20 shadow-sm active:scale-95 transition-transform">
                                 <i class="fa-solid fa-star text-sm"></i> <span id="home-xp">0</span> XP
                             </div>
                         </div>
@@ -190,7 +190,10 @@
                         <p class="text-sm font-medium text-gray-500 mt-1" id="profile-status">Free Member</p>
                     </div>
                     <div class="flex gap-4 mb-8">
-                        <div class="flex-1 card-glass p-4 rounded-2xl text-center"><div class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1 flex items-center justify-center gap-1.5"><i class="fa-solid fa-star text-lg"></i> <span id="profile-xp">0</span></div><p class="text-[11px] uppercase tracking-wider font-semibold text-gray-400">Total XP</p></div>
+                        <div class="flex-1 card-glass p-4 rounded-2xl text-center cursor-pointer active:scale-95 transition-transform" onclick="window.openXpHistory()">
+                            <div class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-1 flex items-center justify-center gap-1.5"><i class="fa-solid fa-star text-lg"></i> <span id="profile-xp">0</span></div>
+                            <p class="text-[11px] uppercase tracking-wider font-semibold text-gray-400">Total XP</p>
+                        </div>
                         <div class="flex-1 card-glass p-4 rounded-2xl text-center"><div class="text-2xl font-bold text-gray-900 dark:text-white mb-1" id="profile-favs">0</div><p class="text-[11px] uppercase tracking-wider font-semibold text-gray-400">Saved Items</p></div>
                     </div>
                     <div class="space-y-3">
@@ -282,6 +285,18 @@
             <div class="glass flex items-center justify-between px-4 py-3 sticky top-0 z-10 pt-safe border-b border-gray-200 dark:border-[#27272a]"><h2 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">About</h2><button onclick="window.closeAbout()" class="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-dark-surface rounded-full text-gray-600 dark:text-gray-300 active:scale-90 transition-transform"><i class="fa-solid fa-times"></i></button></div>
             <div class="flex-1 overflow-y-auto pb-safe p-6 flex flex-col items-center justify-center text-center"><img src="https://uploads.onecompiler.io/43d4xt63k/44eepue29/PHOTO-2026-02-23-13-07-30.jpg" alt="Logo" class="w-24 h-24 object-cover rounded-full shadow-lg mb-4" referrerpolicy="no-referrer"><h3 class="text-2xl font-extrabold text-gray-900 dark:text-white mb-1">AR BRAINCODE</h3><p class="text-gray-500 mb-8 font-medium">Version 1.0.0</p><div class="bg-gray-50 dark:bg-dark-surface w-full p-6 rounded-2xl border border-gray-100 dark:border-dark-border"><p class="text-sm text-gray-600 dark:text-gray-300">Developed by</p><p class="text-lg font-bold text-brand-500 mt-1 tracking-widest uppercase">ARINFOTECH</p></div></div>
         </div>
+
+        <div id="modal-xp-history" class="absolute inset-0 z-[70] bg-white dark:bg-dark-bg hidden flex-col translate-y-full transition-transform duration-200">
+            <div class="glass flex items-center justify-between px-4 py-3 sticky top-0 z-10 pt-safe border-b border-gray-200 dark:border-[#27272a]">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">XP History</h2>
+                <button onclick="window.closeXpHistory()" class="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-dark-surface rounded-full text-gray-600 dark:text-gray-300 active:scale-90 transition-transform">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-y-auto pb-safe p-5 flex flex-col gap-3" id="xp-history-list">
+                </div>
+        </div>
+
     </div>
     
     <script type="module" src="/src/main.jsx"></script>
