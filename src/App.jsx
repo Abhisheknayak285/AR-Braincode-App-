@@ -8,10 +8,9 @@ export default function App() {
     if (isInitialized.current) return;
     isInitialized.current = true;
 
-    // A smart loader to ensure Firebase is ready before running JS
     const initAppLogic = () => {
         if (!window.firebase || !window.firebase.apps) {
-            setTimeout(initAppLogic, 50); // wait for Firebase to load
+            setTimeout(initAppLogic, 50); 
             return;
         }
 
@@ -67,7 +66,6 @@ export default function App() {
             }, duration); 
         }
 
-        // AUTH & ROUTING
         window.authMode = 'login'; 
         window.setAuthMode = function(mode) {
             window.authMode = mode;
@@ -369,6 +367,7 @@ export default function App() {
             const modal = document.getElementById('modal-video'); modal.classList.remove('hidden'); modal.classList.add('flex'); setTimeout(() => { modal.classList.remove('translate-y-full'); }, 10);
         }
 
+        // --- YAHAN 50 XP KA LOGIC UPDATE HUA HAI ---
         window.onPlayerStateChange = function(event) {
             if (event.data == window.YT.PlayerState.PLAYING) {
                 if (window.ytPlayer && window.ytPlayer.getCurrentTime) { let currentTime = window.ytPlayer.getCurrentTime(); if (window.lastVideoTime > 0 && Math.abs(currentTime - window.lastVideoTime) > 3) { window.videoSkipped = true; } window.lastVideoTime = currentTime; }
@@ -377,8 +376,10 @@ export default function App() {
             } else if (event.data == window.YT.PlayerState.ENDED) {
                 clearInterval(window.videoInterval);
                 if (!window.videoSkipped) {
-                    const user = window.getCurrentUser(); const newXp = (user.xp || 0) + 15;
-                    db.collection('users').doc(window.appState.currentUserUid).update({ xp: newXp }); window.showToast('+15 XP for watching full video! ⚡');
+                    const user = window.getCurrentUser(); 
+                    const newXp = (user.xp || 0) + 50;  // Changed from 15 to 50
+                    db.collection('users').doc(window.appState.currentUserUid).update({ xp: newXp }); 
+                    window.showToast('+50 XP for watching full video! ⚡'); // Changed text
                 } else { window.showToast('Video skipped. No XP awarded.'); }
             } else { clearInterval(window.videoInterval); }
         }
@@ -391,6 +392,7 @@ export default function App() {
             }, 200); 
         }
 
+        // --- YAHAN BHI BUG FIX HUA HAI CODE VISIBILITY KE LIYE ---
         window.setModalTab = function(tab) {
             if (tab === 'code') {
                 const v = window.appState.videos.find(x => x.id === window.appState.activeVideoId); const user = window.getCurrentUser();
@@ -480,8 +482,8 @@ export default function App() {
         });
     }
 
-    initAppLogic(); // Run the logic
+    initAppLogic(); 
   }, []);
 
-  return null; // Don't wipe the HTML layout
+  return null; 
 }
