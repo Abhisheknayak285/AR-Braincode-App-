@@ -151,7 +151,7 @@ export default function App() {
                             return userCredential.user.updateProfile({ displayName: name }).then(() => {
                                 return db.collection('users').doc(userCredential.user.uid).set({
                                     name: name, email: email, avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=14b8a6&color=fff`,
-                                    isPremium: false, xp: 0, unlockedItems: [], favorites: [], usedPromos: [], lastDaily: 0, isBlocked: false
+                                    isPremium: false, xp: 0, unlockedItems: [], favorites: [], usedPromos: [], xpHistory: [], lastDaily: 0, isBlocked: false
                                 }, { merge: true });
                             });
                         }).then(() => {
@@ -367,7 +367,6 @@ export default function App() {
             const modal = document.getElementById('modal-video'); modal.classList.remove('hidden'); modal.classList.add('flex'); setTimeout(() => { modal.classList.remove('translate-y-full'); }, 10);
         }
 
-        // --- YAHAN 50 XP KA LOGIC UPDATE HUA HAI ---
         window.onPlayerStateChange = function(event) {
             if (event.data == window.YT.PlayerState.PLAYING) {
                 if (window.ytPlayer && window.ytPlayer.getCurrentTime) { let currentTime = window.ytPlayer.getCurrentTime(); if (window.lastVideoTime > 0 && Math.abs(currentTime - window.lastVideoTime) > 3) { window.videoSkipped = true; } window.lastVideoTime = currentTime; }
@@ -377,9 +376,13 @@ export default function App() {
                 clearInterval(window.videoInterval);
                 if (!window.videoSkipped) {
                     const user = window.getCurrentUser(); 
-                    const newXp = (user.xp || 0) + 50;  // Changed from 15 to 50
-                    db.collection('users').doc(window.appState.currentUserUid).update({ xp: newXp }); 
-                    window.showToast('+50 XP for watching full video! ⚡'); // Changed text
+                    const newXp = (user.xp || 0) + 50;
+                    user.xpHistory = user.xpHistory || [];
+                    user.xpHistory.unshift({ id: Date.now(), type: 'video', amount: 50, date: new Date().toISOString() });
+                    
+                    db.collection('users').doc(window.appState.currentUserUid).update({ xp: newXp, xpHistory: user.xpHistory }); 
+                    window.showToast('+50 XP for watching full video! ⚡');
+                    window.updateUI(); // LIVE update XP text
                 } else { window.showToast('Video skipped. No XP awarded.'); }
             } else { clearInterval(window.videoInterval); }
         }
@@ -392,7 +395,6 @@ export default function App() {
             }, 200); 
         }
 
-        // --- YAHAN BHI BUG FIX HUA HAI CODE VISIBILITY KE LIYE ---
         window.setModalTab = function(tab) {
             if (tab === 'code') {
                 const v = window.appState.videos.find(x => x.id === window.appState.activeVideoId); const user = window.getCurrentUser();
@@ -439,11 +441,63 @@ export default function App() {
                     const promoData = promoSnap.data();
                     if (promoData.isActive === false) { return window.showToast('This code is inactive.'); }
                     user.usedPromos = user.usedPromos || []; if(user.usedPromos.includes(input)) { return window.showToast('You have already used this code.'); }
-                    user.xp = (user.xp || 0) + promoData.xp; user.usedPromos.push(input);
-                    await db.collection('users').doc(window.appState.currentUserUid).update({ xp: user.xp, usedPromos: user.usedPromos });
+                    
+                    user.xp = (user.xp || 0) + promoData.xp; 
+                    user.usedPromos.push(input);
+                    
+                    user.xpHistory = user.xpHistory || [];
+                    user.xpHistory.unshift({ id: Date.now(), type: 'promo', amount: promoData.xp, code: input, date: new Date().toISOString() });
+
+                    await db.collection('users').doc(window.appState.currentUserUid).update({ xp: user.xp, usedPromos: user.usedPromos, xpHistory: user.xpHistory });
                     window.showToast(`+${promoData.xp} XP added! 🎉`); document.getElementById('promo-code-input').value = '';
+                    window.updateUI(); // LIVE update XP text
                 } else { window.showToast('Invalid Code.'); }
             } catch(e) { window.showToast('Error validating code.'); }
+        }
+
+        // --- NEW: XP HISTORY MODAL LOGIC ---
+        window.openXpHistory = function() {
+            const user = window.getCurrentUser();
+            const container = document.getElementById('xp-history-list');
+            container.innerHTML = '';
+            
+            if(!user || !user.xpHistory || user.xpHistory.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 mt-10 text-sm font-medium">No XP history found yet.<br>Watch videos or redeem codes to earn XP!</div>';
+            } else {
+                user.xpHistory.forEach(item => {
+                    let icon = item.type === 'video' ? '<i class="fa-brands fa-youtube text-red-500"></i>' : '<i class="fa-solid fa-ticket text-brand-500"></i>';
+                    let title = item.type === 'video' ? 'Video Reward' : 'Promo Code';
+                    let desc = item.type === 'video' ? 'Watched full tutorial' : `Code: ${item.code || 'REDEEMED'}`;
+                    
+                    let dateObj = new Date(item.date);
+                    let dateStr = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                    
+                    container.innerHTML += `
+                        <div class="card-glass p-4 rounded-2xl flex items-center justify-between border border-gray-100 dark:border-[#27272a]">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-dark-surface flex items-center justify-center text-lg shadow-sm border border-gray-200 dark:border-gray-800">
+                                    ${icon}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-900 dark:text-white leading-tight">${title}</h4>
+                                    <p class="text-[11px] text-gray-500 font-medium mt-0.5">${desc} • ${dateStr}</p>
+                                </div>
+                            </div>
+                            <div class="font-extrabold text-brand-500">+${item.amount} <span class="text-[10px] text-gray-400">XP</span></div>
+                        </div>
+                    `;
+                });
+            }
+            
+            const modal = document.getElementById('modal-xp-history');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('translate-y-full'); }, 10);
+        }
+
+        window.closeXpHistory = function() {
+            const modal = document.getElementById('modal-xp-history');
+            modal.classList.add('translate-y-full');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 200);
         }
 
         // --- INIT CALLS ---
@@ -467,11 +521,13 @@ export default function App() {
                         window.appState.currentUserProfile.favorites = window.appState.currentUserProfile.favorites || [];
                         window.appState.currentUserProfile.unlockedItems = window.appState.currentUserProfile.unlockedItems || [];
                         window.appState.currentUserProfile.usedPromos = window.appState.currentUserProfile.usedPromos || [];
+                        window.appState.currentUserProfile.xpHistory = window.appState.currentUserProfile.xpHistory || []; // ADDED FOR EXISTING USERS
+                        
                         if(window.appState.currentUserProfile.isBlocked) { auth.signOut(); window.showToast("Your account has been blocked by the administrator."); return; }
                         window.updateUI(); document.getElementById('view-loading').classList.add('hidden'); window.routeApp();
                     } else {
                         const finalName = user.displayName || "Developer"; const defaultAvatar = user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(finalName)}&background=14b8a6&color=fff`;
-                        db.collection('users').doc(user.uid).set({ name: finalName, email: user.email, avatar: defaultAvatar, isPremium: false, xp: 0, unlockedItems: [], favorites: [], usedPromos: [], lastDaily: 0, isBlocked: false });
+                        db.collection('users').doc(user.uid).set({ name: finalName, email: user.email, avatar: defaultAvatar, isPremium: false, xp: 0, unlockedItems: [], favorites: [], usedPromos: [], xpHistory: [], lastDaily: 0, isBlocked: false });
                     }
                 });
             } else {
