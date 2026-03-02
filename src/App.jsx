@@ -38,6 +38,10 @@ export default function App() {
         window.videoSkipped = false;
         window.lastVideoTime = 0;
         window.videoInterval = null;
+        
+        // AD VARIABLES
+        window.hasShownAd = false;
+        window.adTimerInterval = null;
 
         window.onYouTubeIframeAPIReady = function() {}
 
@@ -182,7 +186,52 @@ export default function App() {
                 document.getElementById('view-auth').classList.add('hidden'); document.getElementById('view-auth').classList.remove('flex');
                 document.getElementById('view-main').classList.remove('hidden'); document.getElementById('view-main').classList.add('flex');
                 window.updateUI(); window.renderAll();
+                
+                // CHECK AND SHOW AD
+                if (!window.hasShownAd) {
+                    window.hasShownAd = true;
+                    setTimeout(() => { window.showStartupAd(); }, 600);
+                }
             }
+        }
+
+        // --- NEW AD LOGIC ---
+        window.showStartupAd = function() {
+            const modal = document.getElementById('modal-startup-ad');
+            const box = document.getElementById('ad-content-box');
+            const timerText = document.getElementById('ad-timer-text');
+            
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                box.classList.remove('scale-95');
+            }, 10);
+
+            let timeLeft = 5;
+            timerText.innerText = timeLeft;
+            
+            clearInterval(window.adTimerInterval);
+            window.adTimerInterval = setInterval(() => {
+                timeLeft--;
+                if(timeLeft >= 0) { timerText.innerText = timeLeft; }
+                if (timeLeft <= 0) { window.closeStartupAd(); }
+            }, 1000);
+        }
+
+        window.closeStartupAd = function() {
+            clearInterval(window.adTimerInterval);
+            const modal = document.getElementById('modal-startup-ad');
+            const box = document.getElementById('ad-content-box');
+            
+            modal.classList.add('opacity-0');
+            box.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
         }
 
         window.switchTab = function(tabId) {
@@ -382,7 +431,7 @@ export default function App() {
                     
                     db.collection('users').doc(window.appState.currentUserUid).update({ xp: newXp, xpHistory: user.xpHistory }); 
                     window.showToast('+50 XP for watching full video! ⚡');
-                    window.updateUI(); // LIVE update XP text
+                    window.updateUI(); 
                 } else { window.showToast('Video skipped. No XP awarded.'); }
             } else { clearInterval(window.videoInterval); }
         }
@@ -450,12 +499,11 @@ export default function App() {
 
                     await db.collection('users').doc(window.appState.currentUserUid).update({ xp: user.xp, usedPromos: user.usedPromos, xpHistory: user.xpHistory });
                     window.showToast(`+${promoData.xp} XP added! 🎉`); document.getElementById('promo-code-input').value = '';
-                    window.updateUI(); // LIVE update XP text
+                    window.updateUI(); 
                 } else { window.showToast('Invalid Code.'); }
             } catch(e) { window.showToast('Error validating code.'); }
         }
 
-        // --- NEW: XP HISTORY MODAL LOGIC ---
         window.openXpHistory = function() {
             const user = window.getCurrentUser();
             const container = document.getElementById('xp-history-list');
@@ -521,7 +569,7 @@ export default function App() {
                         window.appState.currentUserProfile.favorites = window.appState.currentUserProfile.favorites || [];
                         window.appState.currentUserProfile.unlockedItems = window.appState.currentUserProfile.unlockedItems || [];
                         window.appState.currentUserProfile.usedPromos = window.appState.currentUserProfile.usedPromos || [];
-                        window.appState.currentUserProfile.xpHistory = window.appState.currentUserProfile.xpHistory || []; // ADDED FOR EXISTING USERS
+                        window.appState.currentUserProfile.xpHistory = window.appState.currentUserProfile.xpHistory || []; 
                         
                         if(window.appState.currentUserProfile.isBlocked) { auth.signOut(); window.showToast("Your account has been blocked by the administrator."); return; }
                         window.updateUI(); document.getElementById('view-loading').classList.add('hidden'); window.routeApp();
