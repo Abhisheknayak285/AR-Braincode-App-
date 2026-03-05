@@ -262,22 +262,20 @@
                 <button onclick="window.closePaymentModal()" class="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-dark-surface rounded-full text-gray-600 dark:text-gray-300 active:scale-90 transition-transform"><i class="fa-solid fa-times"></i></button>
             </div>
             <div class="flex-1 overflow-y-auto pb-safe p-6 flex flex-col items-center text-center">
-                <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-5 py-2.5 rounded-xl font-extrabold mb-6 text-xl shadow-sm border border-blue-100 dark:border-blue-900/30">
+                
+                <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-5 py-2.5 rounded-xl font-extrabold mb-4 text-xl shadow-sm border border-blue-100 dark:border-blue-900/30">
                     <span id="pay-xp-amount">0</span> XP = ₹<span id="pay-inr-amount">0</span>
                 </div>
                 
-                <p class="text-sm text-gray-500 mb-4 font-medium">Scan QR or Copy UPI ID to pay via any app (FamPay, PhonePe, GPay)</p>
-                
-                <div class="w-48 h-48 bg-white p-2 rounded-2xl shadow-xl border-2 border-gray-200 dark:border-gray-700 mb-4 relative flex items-center justify-center">
-                    <img src="" alt="Pay QR" class="w-full h-full object-contain rounded-xl" id="payment-qr-img">
+                <p class="text-[13px] font-bold text-green-600 dark:text-green-400 mb-2">✅ Accept payments via Paytm, GPay, PhonePe only.</p>
+                <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/30 p-3 rounded-lg mb-6 w-full text-left shadow-sm">
+                    <p class="text-xs text-red-600 dark:text-red-400 font-semibold leading-relaxed">
+                        <i class="fa-solid fa-triangle-exclamation"></i> IMPORTANT: Scan the QR below and pay exactly <strong class="text-sm">₹<span id="pay-exact-amount">0</span></strong>. Do not pay more or less. Excess amount will NOT be refunded.
+                    </p>
                 </div>
                 
-                <div class="flex items-center gap-2 bg-gray-100 dark:bg-dark-surface px-4 py-3 rounded-xl mb-8 w-full justify-between border border-gray-200 dark:border-[#27272a]">
-                    <div class="text-left">
-                        <p class="text-[10px] uppercase font-bold text-gray-500">Official UPI ID</p>
-                        <p class="text-sm font-bold text-gray-900 dark:text-white" id="official-upi-id">yourupi@ybl</p>
-                    </div>
-                    <button onclick="window.copyData('official-upi-id')" class="text-brand-500 font-bold text-sm bg-brand-50 dark:bg-brand-900/20 px-4 py-1.5 rounded-lg active:scale-95 transition-transform">COPY</button>
+                <div class="w-56 h-56 bg-white p-2 rounded-2xl shadow-xl border-2 border-gray-200 dark:border-gray-700 mb-8 relative flex items-center justify-center">
+                    <img src="https://uploads.onecompiler.io/43d4xt63k/44ety2gn6/PHOTO-2026-03-05-08-50-06.jpg" alt="Pay QR" class="w-full h-full object-contain rounded-xl" id="payment-qr-img">
                 </div>
 
                 <div class="w-full text-left">
@@ -345,13 +343,8 @@
     <script>
         let currentPayXp = 0;
         let currentPayInr = 0;
-        
-        // ⚠️⚠️⚠️ YAHAN APNA ASLI UPI ID DAALNA HAI ⚠️⚠️⚠️
-        const MY_UPI_ID = "yourupi@ybl"; 
-        const MY_NAME = "AR BRAINCODE";
 
         window.openPaymentModal = (xp, inr) => {
-            // Hum directly firebase auth check kar rahe hain, agar window.firebase exist karta hai
             const user = window.firebase && firebase.auth ? firebase.auth().currentUser : null;
             if(!user) {
                 alert("Please Login First to Buy XP!");
@@ -361,15 +354,12 @@
             currentPayXp = xp;
             currentPayInr = inr;
             
+            // Set dynamic values
             document.getElementById('pay-xp-amount').innerText = xp;
             document.getElementById('pay-inr-amount').innerText = inr;
+            document.getElementById('pay-exact-amount').innerText = inr; // Warning amount update
             document.getElementById('pay-user-email').innerText = user.email;
             document.getElementById('utr-input').value = '';
-            
-            // Auto Generate QR code for exact amount
-            const upiLink = `upi://pay?pa=${MY_UPI_ID}&pn=${MY_NAME}&am=${inr}&cu=INR`;
-            document.getElementById('payment-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
-            document.getElementById('official-upi-id').innerText = MY_UPI_ID;
             
             const modal = document.getElementById('modal-payment');
             modal.classList.remove('hidden');
