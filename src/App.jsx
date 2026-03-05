@@ -201,6 +201,8 @@ export default function App() {
             const box = document.getElementById('ad-content-box');
             const timerText = document.getElementById('ad-timer-text');
             
+            if(!modal || !box || !timerText) return; // Safeguard if ad elements aren't in HTML yet
+
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             
@@ -224,6 +226,7 @@ export default function App() {
             clearInterval(window.adTimerInterval);
             const modal = document.getElementById('modal-startup-ad');
             const box = document.getElementById('ad-content-box');
+            if(!modal || !box) return;
             
             modal.classList.add('opacity-0');
             box.classList.add('scale-95');
@@ -425,12 +428,14 @@ export default function App() {
                 clearInterval(window.videoInterval);
                 if (!window.videoSkipped) {
                     const user = window.getCurrentUser(); 
-                    const newXp = (user.xp || 0) + 50;
+                    
+                    // --- CHANGED XP REWARD FROM 50 TO 25 HERE ---
+                    const newXp = (user.xp || 0) + 25;
                     user.xpHistory = user.xpHistory || [];
-                    user.xpHistory.unshift({ id: Date.now(), type: 'video', amount: 50, date: new Date().toISOString() });
+                    user.xpHistory.unshift({ id: Date.now(), type: 'video', amount: 25, date: new Date().toISOString() });
                     
                     db.collection('users').doc(window.appState.currentUserUid).update({ xp: newXp, xpHistory: user.xpHistory }); 
-                    window.showToast('+50 XP for watching full video! ⚡');
+                    window.showToast('+25 XP for watching full video! ⚡');
                     window.updateUI(); 
                 } else { window.showToast('Video skipped. No XP awarded.'); }
             } else { clearInterval(window.videoInterval); }
