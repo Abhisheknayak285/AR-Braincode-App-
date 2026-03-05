@@ -263,7 +263,6 @@
             </div>
             
             <div class="flex-1 overflow-y-auto pb-24 p-6 flex flex-col items-center text-center">
-                
                 <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-5 py-2.5 rounded-xl font-extrabold mb-4 text-xl shadow-sm border border-blue-100 dark:border-blue-900/30">
                     <span id="pay-xp-amount">0</span> XP = ₹<span id="pay-inr-amount">0</span>
                 </div>
@@ -282,10 +281,8 @@
                 <div class="w-full text-left">
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 ml-1">Enter 12-Digit UTR / Ref Number</label>
                     <input type="number" id="utr-input" class="input-native border border-gray-200 dark:border-[#27272a] text-lg tracking-widest font-mono" placeholder="e.g. 312345678912">
-                    
                     <p class="text-[11px] text-gray-500 mt-2 ml-1 leading-tight"><i class="fa-solid fa-shield-check text-green-500"></i> Secured! Your registered email <span id="pay-user-email" class="font-bold text-gray-900 dark:text-white"></span> is automatically linked to this payment.</p>
                 </div>
-
                 <button onclick="window.submitUtr()" id="submit-utr-btn" class="w-full py-4 mt-6 mb-12 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-base active:scale-[0.98] transition-all flex justify-center items-center shadow-lg shadow-brand-500/20">Submit Verification</button>
             </div>
         </div>
@@ -350,6 +347,11 @@
         let currentPayInr = 0;
 
         window.openPaymentModal = (xp, inr) => {
+            // STOP! Show "Coming Soon" Alert instead of opening the modal
+            alert("🚀 Premium XP feature is COMING SOON! We are setting up a secure payment gateway. Stay tuned!");
+            return; // This blocks the rest of the code from running
+            
+            // --- ORIGINAL CODE KEPT SAFE BELOW FOR FUTURE USE ---
             const user = window.firebase && firebase.auth ? firebase.auth().currentUser : null;
             if(!user) {
                 alert("Please Login First to Buy XP!");
@@ -359,10 +361,9 @@
             currentPayXp = xp;
             currentPayInr = inr;
             
-            // Set dynamic values
             document.getElementById('pay-xp-amount').innerText = xp;
             document.getElementById('pay-inr-amount').innerText = inr;
-            document.getElementById('pay-exact-amount').innerText = inr; // Warning amount update
+            document.getElementById('pay-exact-amount').innerText = inr;
             document.getElementById('pay-user-email').innerText = user.email;
             document.getElementById('utr-input').value = '';
             
