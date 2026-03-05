@@ -38,6 +38,7 @@
 
     <div id="app-wrapper" class="bg-gray-50 dark:bg-dark-bg flex flex-col h-full overflow-hidden relative">
         <div id="toast-container"></div>
+        
         <div id="view-loading" class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-white dark:bg-dark-bg">
             <div class="relative w-24 h-24 mb-6">
                 <div class="absolute inset-0 border-4 border-gray-100 dark:border-gray-800 rounded-full"></div>
@@ -109,7 +110,9 @@
                     </button>
                 </div>
             </header>
+            
             <main id="main-content" class="flex-1 overflow-y-auto no-scrollbar pb-28 relative page-enter">
+                
                 <div id="tab-home" class="p-5 space-y-8 block">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center gap-3">
@@ -133,12 +136,14 @@
                         <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 snap-x" id="home-latest-container"></div>
                     </section>
                 </div>
+
                 <div id="tab-videos" class="p-5 hidden">
                     <div class="sticky top-0 z-10 bg-[#f4f4f5] dark:bg-dark-bg pt-1 pb-4">
                         <div class="relative"><i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i><input type="text" id="video-search" oninput="window.filterVideos()" placeholder="Search content..." class="w-full pl-11 pr-4 py-3 rounded-xl bg-white dark:bg-dark-elevated border border-gray-200 dark:border-dark-border focus:border-brand-500 outline-none text-sm shadow-sm transition-all"></div>
                     </div>
                     <div class="space-y-5 mt-2" id="videos-list-container"></div>
                 </div>
+
                 <div id="tab-premium" class="p-5 hidden">
                     <div class="text-center py-8 px-6 mb-6 rounded-3xl bg-gray-900 dark:bg-dark-elevated border border-gray-800 dark:border-dark-border text-white relative overflow-hidden shadow-2xl">
                         <div class="absolute -right-10 -top-10 w-40 h-40 bg-brand-500 rounded-full blur-3xl opacity-20"></div>
@@ -148,6 +153,7 @@
                         <p class="text-sm text-gray-400 mb-6 font-medium">Use your earned XP to individually unlock high-value source codes.</p>
                         <div id="premium-status-banner"></div>
                     </div>
+
                     <div class="card-glass p-5 rounded-2xl mb-8">
                         <h3 class="font-bold text-sm text-gray-500 uppercase tracking-wider mb-3">Redeem Special Code</h3>
                         <div class="flex gap-2">
@@ -155,9 +161,29 @@
                             <button onclick="window.redeemCode()" class="bg-gray-900 dark:bg-white text-white dark:text-black px-5 py-2 rounded-xl text-sm font-bold active:scale-95 transition-transform shadow-lg">Apply</button>
                         </div>
                     </div>
+
+                    <h3 class="font-bold text-xl tracking-tight mb-4 mt-8">Buy Premium XP</h3>
+                    <div class="grid grid-cols-3 gap-3 mb-8">
+                        <div onclick="window.openPaymentModal(100, 4)" class="card-glass p-3 rounded-2xl text-center cursor-pointer active:scale-95 transition-transform border border-brand-500/30 bg-brand-50/5 dark:bg-brand-900/10 shadow-sm">
+                            <div class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-1"><i class="fa-solid fa-star text-sm"></i> 100</div>
+                            <p class="text-[12px] font-bold text-gray-900 dark:text-white">₹4</p>
+                        </div>
+                        <div onclick="window.openPaymentModal(500, 24)" class="card-glass p-3 rounded-2xl text-center cursor-pointer active:scale-95 transition-transform border border-brand-500/50 bg-brand-50/10 dark:bg-brand-900/20 relative overflow-hidden shadow-md">
+                            <div class="absolute top-0 right-0 bg-brand-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-bl-lg">POPULAR</div>
+                            <div class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-1"><i class="fa-solid fa-star text-sm"></i> 500</div>
+                            <p class="text-[12px] font-bold text-gray-900 dark:text-white">₹24</p>
+                        </div>
+                        <div onclick="window.openPaymentModal(1000, 49)" class="card-glass p-3 rounded-2xl text-center cursor-pointer active:scale-95 transition-transform border border-accent-500/50 bg-accent-50/10 dark:bg-accent-900/20 relative overflow-hidden shadow-md">
+                            <div class="absolute top-0 right-0 bg-accent-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-bl-lg">BEST VALUE</div>
+                            <div class="text-xl font-bold text-blue-600 dark:text-blue-400 mb-1"><i class="fa-solid fa-star text-sm"></i> 1000</div>
+                            <p class="text-[12px] font-bold text-gray-900 dark:text-white">₹49</p>
+                        </div>
+                    </div>
+
                     <h3 class="font-bold text-xl tracking-tight mb-4">Locked Content</h3>
                     <div class="grid grid-cols-1 gap-4" id="premium-list-container"></div>
                 </div>
+
                 <div id="tab-profile" class="p-5 hidden">
                     <div class="flex flex-col items-center mb-8 mt-4">
                         <div class="relative group cursor-pointer" onclick="window.openEditProfile()">
@@ -189,6 +215,7 @@
                     </div>
                 </div>
             </main>
+
             <nav class="glass fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[480px] z-50 pb-safe shadow-[0_-1px_0_rgba(0,0,0,0.05)] dark:shadow-none border-t border-gray-200 dark:border-[#27272a] transition-all duration-300">
                 <div class="flex justify-around items-center pt-2 pb-1 px-2">
                     <button onclick="window.switchTab('home')" class="nav-btn active flex flex-col items-center gap-1 p-2 w-16 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all duration-300 active:scale-90" data-target="home"><i class="fa-solid fa-house text-xl mb-0.5"></i><span class="text-[10px] font-semibold tracking-wide">Home</span></button>
@@ -226,6 +253,41 @@
                         <div id="code-unlocked" class="flex flex-col gap-5 w-full"><div class="flex items-start gap-3 w-full"><div class="flex-1 overflow-hidden flex flex-col"><div class="flex justify-between items-center mb-2"><span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest">Source Code</span><button onclick="window.copyData('modal-source-code')" class="bg-gray-900 dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-lg text-[10px] font-bold active:scale-95 transition-transform flex items-center gap-1.5"><i class="fa-regular fa-copy"></i> Copy Code</button></div><div class="bg-gray-100 dark:bg-[#18181b] text-gray-900 dark:text-gray-200 p-4 rounded-2xl text-sm leading-relaxed border border-gray-200 dark:border-[#27272a] overflow-x-auto relative"><p id="modal-source-code" class="whitespace-pre-wrap font-medium font-mono text-[13px]"></p></div></div></div></div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div id="modal-payment" class="absolute inset-0 z-[80] bg-white dark:bg-dark-bg hidden flex-col translate-y-full transition-transform duration-200">
+            <div class="glass flex items-center justify-between px-4 py-3 sticky top-0 z-10 pt-safe border-b border-gray-200 dark:border-[#27272a]">
+                <h2 class="text-lg font-bold text-gray-900 dark:text-white tracking-tight">Complete Payment</h2>
+                <button onclick="window.closePaymentModal()" class="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-dark-surface rounded-full text-gray-600 dark:text-gray-300 active:scale-90 transition-transform"><i class="fa-solid fa-times"></i></button>
+            </div>
+            <div class="flex-1 overflow-y-auto pb-safe p-6 flex flex-col items-center text-center">
+                <div class="bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-5 py-2.5 rounded-xl font-extrabold mb-6 text-xl shadow-sm border border-blue-100 dark:border-blue-900/30">
+                    <span id="pay-xp-amount">0</span> XP = ₹<span id="pay-inr-amount">0</span>
+                </div>
+                
+                <p class="text-sm text-gray-500 mb-4 font-medium">Scan QR or Copy UPI ID to pay via any app (FamPay, PhonePe, GPay)</p>
+                
+                <div class="w-48 h-48 bg-white p-2 rounded-2xl shadow-xl border-2 border-gray-200 dark:border-gray-700 mb-4 relative flex items-center justify-center">
+                    <img src="" alt="Pay QR" class="w-full h-full object-contain rounded-xl" id="payment-qr-img">
+                </div>
+                
+                <div class="flex items-center gap-2 bg-gray-100 dark:bg-dark-surface px-4 py-3 rounded-xl mb-8 w-full justify-between border border-gray-200 dark:border-[#27272a]">
+                    <div class="text-left">
+                        <p class="text-[10px] uppercase font-bold text-gray-500">Official UPI ID</p>
+                        <p class="text-sm font-bold text-gray-900 dark:text-white" id="official-upi-id">yourupi@ybl</p>
+                    </div>
+                    <button onclick="window.copyData('official-upi-id')" class="text-brand-500 font-bold text-sm bg-brand-50 dark:bg-brand-900/20 px-4 py-1.5 rounded-lg active:scale-95 transition-transform">COPY</button>
+                </div>
+
+                <div class="w-full text-left">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 ml-1">Enter 12-Digit UTR / Ref Number</label>
+                    <input type="number" id="utr-input" class="input-native border border-gray-200 dark:border-[#27272a] text-lg tracking-widest font-mono" placeholder="e.g. 312345678912">
+                    
+                    <p class="text-[11px] text-gray-500 mt-2 ml-1 leading-tight"><i class="fa-solid fa-shield-check text-green-500"></i> Secured! Your registered email <span id="pay-user-email" class="font-bold text-gray-900 dark:text-white"></span> is automatically linked to this payment.</p>
+                </div>
+
+                <button onclick="window.submitUtr()" id="submit-utr-btn" class="w-full py-4 mt-6 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-base active:scale-[0.98] transition-all flex justify-center items-center shadow-lg shadow-brand-500/20">Submit Verification</button>
             </div>
         </div>
 
@@ -280,6 +342,85 @@
 
     </div>
     
+    <script>
+        let currentPayXp = 0;
+        let currentPayInr = 0;
+        
+        // ⚠️⚠️⚠️ YAHAN APNA ASLI UPI ID DAALNA HAI ⚠️⚠️⚠️
+        const MY_UPI_ID = "yourupi@ybl"; 
+        const MY_NAME = "AR BRAINCODE";
+
+        window.openPaymentModal = (xp, inr) => {
+            // Hum directly firebase auth check kar rahe hain, agar window.firebase exist karta hai
+            const user = window.firebase && firebase.auth ? firebase.auth().currentUser : null;
+            if(!user) {
+                alert("Please Login First to Buy XP!");
+                return;
+            }
+            
+            currentPayXp = xp;
+            currentPayInr = inr;
+            
+            document.getElementById('pay-xp-amount').innerText = xp;
+            document.getElementById('pay-inr-amount').innerText = inr;
+            document.getElementById('pay-user-email').innerText = user.email;
+            document.getElementById('utr-input').value = '';
+            
+            // Auto Generate QR code for exact amount
+            const upiLink = `upi://pay?pa=${MY_UPI_ID}&pn=${MY_NAME}&am=${inr}&cu=INR`;
+            document.getElementById('payment-qr-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiLink)}`;
+            document.getElementById('official-upi-id').innerText = MY_UPI_ID;
+            
+            const modal = document.getElementById('modal-payment');
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.remove('translate-y-full'); }, 10);
+        };
+
+        window.closePaymentModal = () => {
+            const modal = document.getElementById('modal-payment');
+            modal.classList.add('translate-y-full');
+            setTimeout(() => { modal.classList.add('hidden'); }, 200);
+        };
+
+        window.submitUtr = async () => {
+            const utr = document.getElementById('utr-input').value.trim();
+            const btn = document.getElementById('submit-utr-btn');
+            
+            if(utr.length !== 12) {
+                alert("Wait! UTR must be exactly 12 digits long.");
+                return;
+            }
+
+            const user = window.firebase && firebase.auth ? firebase.auth().currentUser : null;
+            if(!user) return;
+
+            btn.innerText = "Verifying...";
+            btn.disabled = true;
+
+            try {
+                await firebase.firestore().collection('PaymentRequests').add({
+                    uid: user.uid,
+                    name: user.displayName || "AR User",
+                    email: user.email,
+                    xpAmount: currentPayXp,
+                    pricePaid: currentPayInr,
+                    utrNumber: utr,
+                    status: "Pending",
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert("✅ Request Submitted! We are verifying your UTR. Your XP will be added within 2 to 12 hours.");
+                window.closePaymentModal();
+            } catch(error) {
+                console.error("Payment Submission Error: ", error);
+                alert("Error submitting. Please try again or contact support on Telegram.");
+            } finally {
+                btn.innerText = "Submit Verification";
+                btn.disabled = false;
+            }
+        };
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>
