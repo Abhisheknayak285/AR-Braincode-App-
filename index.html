@@ -127,26 +127,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col gap-4">
-                        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-500 to-blue-600 p-5 text-white shadow-lg active:scale-[0.98] transition-transform cursor-pointer" onclick="window.open('https://t.me/arbraincode', '_blank')">
-                            <div class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-                            <div class="flex items-center justify-between relative z-10">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md"><i class="fa-brands fa-telegram text-2xl"></i></div>
-                                    <div><h3 class="font-bold text-lg leading-tight">Join the Network</h3><p class="text-sm opacity-90 mt-0.5">Daily drops & pro codes</p></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="relative overflow-hidden rounded-2xl bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] p-5 text-white shadow-lg active:scale-[0.98] transition-transform cursor-pointer" onclick="window.open('https://instagram.com/arbraincode', '_blank')">
-                            <div class="absolute -right-6 -top-6 w-32 h-32 bg-white opacity-10 rounded-full blur-2xl"></div>
-                            <div class="flex items-center justify-between relative z-10">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md"><i class="fa-brands fa-instagram text-2xl"></i></div>
-                                    <div><h3 class="font-bold text-lg leading-tight">Follow on Instagram</h3><p class="text-sm opacity-90 mt-0.5">For more updates follow on Instagram</p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <section>
                         <div class="flex justify-between items-end mb-4"><h3 class="font-bold text-xl tracking-tight">Trending Now</h3><button onclick="window.switchTab('videos')" class="text-sm text-brand-500 font-semibold active:scale-95 transition-transform">See All</button></div>
                         <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 snap-x" id="home-latest-container"></div>
@@ -293,33 +274,8 @@
                     <i class="fa-solid fa-times"></i>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto pb-safe p-5 flex flex-col gap-3" id="xp-history-list"></div>
-        </div>
-
-        <div id="modal-startup-ad" class="absolute inset-0 z-[100] bg-black/80 backdrop-blur-sm hidden flex-col items-center justify-center p-6 opacity-0 transition-opacity duration-300">
-            <div class="relative w-full max-w-sm bg-[#121212] border border-[#27272a] rounded-3xl p-1 overflow-hidden shadow-[0_0_50px_-12px_rgba(20,184,166,0.5)] transform scale-95 transition-transform duration-300" id="ad-content-box">
-                <div class="absolute inset-0 bg-gradient-to-r from-brand-500 via-accent-500 to-brand-500 opacity-20 animate-pulse"></div>
-                <div class="relative bg-[#0a0a0a] rounded-[22px] p-6 flex flex-col items-center text-center">
-                    <button onclick="window.closeStartupAd()" class="absolute top-4 right-4 w-8 h-8 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                    <div class="bg-red-500/20 text-red-500 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-widest mb-4 border border-red-500/30">
-                        🔥 Limited Time Offer
-                    </div>
-                    <div class="w-16 h-16 bg-gradient-to-tr from-brand-400 to-accent-500 rounded-full flex items-center justify-center shadow-lg shadow-brand-500/40 mb-4">
-                        <i class="fa-solid fa-gift text-3xl text-white"></i>
-                    </div>
-                    <h2 class="text-2xl font-extrabold text-white mb-2 tracking-tight">Claim Your Free XP!</h2>
-                    <p class="text-gray-400 text-sm mb-6">Use the secret promo code below to instantly boost your account by <strong class="text-brand-400">100 XP</strong>.</p>
-                    <div class="bg-black border border-[#27272a] w-full py-3 rounded-xl mb-6 relative overflow-hidden group cursor-pointer" onclick="window.copyData('ad-promo-code')">
-                        <div class="absolute inset-0 bg-brand-500/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        <span id="ad-promo-code" class="font-mono text-xl font-bold tracking-[0.2em] text-brand-500">FREE100</span>
-                    </div>
-                    <div class="text-xs text-gray-500 font-medium bg-white/5 px-4 py-2 rounded-full flex items-center gap-2">
-                        <i class="fa-regular fa-clock"></i> Auto closing in <span id="ad-timer-text" class="text-white font-bold w-3">5</span>s
-                    </div>
+            <div class="flex-1 overflow-y-auto pb-safe p-5 flex flex-col gap-3" id="xp-history-list">
                 </div>
-            </div>
         </div>
 
     </div>
