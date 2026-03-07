@@ -39,7 +39,6 @@ export default function App() {
         window.lastVideoTime = 0;
         window.videoInterval = null;
         
-        // AD VARIABLES
         window.hasShownAd = false;
         window.adTimerInterval = null;
 
@@ -187,7 +186,6 @@ export default function App() {
                 document.getElementById('view-main').classList.remove('hidden'); document.getElementById('view-main').classList.add('flex');
                 window.updateUI(); window.renderAll();
                 
-                // CHECK AND SHOW AD
                 if (!window.hasShownAd) {
                     window.hasShownAd = true;
                     setTimeout(() => { window.showStartupAd(); }, 600);
@@ -195,13 +193,12 @@ export default function App() {
             }
         }
 
-        // --- NEW AD LOGIC ---
         window.showStartupAd = function() {
             const modal = document.getElementById('modal-startup-ad');
             const box = document.getElementById('ad-content-box');
             const timerText = document.getElementById('ad-timer-text');
             
-            if(!modal || !box || !timerText) return; // Safeguard if ad elements aren't in HTML yet
+            if(!modal || !box || !timerText) return; 
 
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -284,23 +281,15 @@ export default function App() {
 
         window.renderAll = function() { window.renderHome(); window.renderPremium(); if(window.appState.currentTab === 'videos') window.filterVideos(); }
 
+        // --- TRENDING SECTION VERTICAL UPDATE ---
         window.renderHome = function() {
             const latest = [...window.appState.videos].slice(0, 4); const container = document.getElementById('home-latest-container'); container.innerHTML = '';
             if(latest.length === 0) { container.innerHTML = '<p class="text-gray-500 text-sm py-4">No content available yet.</p>'; return; }
             const user = window.getCurrentUser();
             latest.forEach(v => {
                 const isFav = (user?.favorites || []).includes(v.id);
-                container.innerHTML += `
-                    <div class="snap-start shrink-0 w-[260px] card-glass rounded-2xl overflow-hidden active:scale-[0.98] transition-transform cursor-pointer" onclick="window.openVideoModal('${v.id}')">
-                        <div class="w-full aspect-video bg-gray-200 dark:bg-gray-800 relative">
-                            <img src="https://img.youtube.com/vi/${v.ytId}/hqdefault.jpg" class="w-full h-full object-cover">
-                            <div class="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 hover:opacity-100 transition-opacity">
-                                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center"><i class="fa-solid fa-play text-white text-xl ml-1"></i></div>
-                            </div>
-                        </div>
-                        <div class="p-4"><h4 class="font-bold text-[15px] truncate-2-lines leading-snug">${v.title}</h4></div>
-                    </div>
-                `;
+                // FULL WIDTH VERTICAL CARDS LIKE VIDEOS TAB
+                container.innerHTML += `<div class="card-glass rounded-2xl overflow-hidden flex flex-col active:scale-[0.98] transition-transform cursor-pointer" onclick="window.openVideoModal('${v.id}')">${window.generateCardContent(v, user, isFav)}</div>`;
             });
         }
 
@@ -429,7 +418,6 @@ export default function App() {
                 if (!window.videoSkipped) {
                     const user = window.getCurrentUser(); 
                     
-                    // --- CHANGED XP REWARD FROM 50 TO 25 HERE ---
                     const newXp = (user.xp || 0) + 25;
                     user.xpHistory = user.xpHistory || [];
                     user.xpHistory.unshift({ id: Date.now(), type: 'video', amount: 25, date: new Date().toISOString() });
