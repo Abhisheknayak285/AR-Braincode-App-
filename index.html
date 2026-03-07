@@ -133,7 +133,7 @@
                     
                     <section>
                         <div class="flex justify-between items-end mb-4"><h3 class="font-bold text-xl tracking-tight">Trending Now</h3><button onclick="window.switchTab('videos')" class="text-sm text-brand-500 font-semibold active:scale-95 transition-transform">See All</button></div>
-                        <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 snap-x" id="home-latest-container"></div>
+                        <div class="flex flex-col gap-5 pb-2" id="home-latest-container"></div>
                     </section>
                 </div>
 
@@ -347,29 +347,8 @@
         let currentPayInr = 0;
 
         window.openPaymentModal = (xp, inr) => {
-            // STOP! Show "Coming Soon" Alert instead of opening the modal
             alert("🚀 Premium XP feature is COMING SOON! We are setting up a secure payment gateway. Stay tuned!");
-            return; // This blocks the rest of the code from running
-            
-            // --- ORIGINAL CODE KEPT SAFE BELOW FOR FUTURE USE ---
-            const user = window.firebase && firebase.auth ? firebase.auth().currentUser : null;
-            if(!user) {
-                alert("Please Login First to Buy XP!");
-                return;
-            }
-            
-            currentPayXp = xp;
-            currentPayInr = inr;
-            
-            document.getElementById('pay-xp-amount').innerText = xp;
-            document.getElementById('pay-inr-amount').innerText = inr;
-            document.getElementById('pay-exact-amount').innerText = inr;
-            document.getElementById('pay-user-email').innerText = user.email;
-            document.getElementById('utr-input').value = '';
-            
-            const modal = document.getElementById('modal-payment');
-            modal.classList.remove('hidden');
-            setTimeout(() => { modal.classList.remove('translate-y-full'); }, 10);
+            return; 
         };
 
         window.closePaymentModal = () => {
