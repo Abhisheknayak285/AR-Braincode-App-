@@ -134,7 +134,7 @@
                     <div class="px-5 pb-5 pt-3 space-y-6">
                         <section>
                             <div class="flex gap-4 overflow-x-auto no-scrollbar pb-2 snap-x">
-                                <div onclick="window.location.href='https://t.me/arbraincode'" class="block snap-start shrink-0 w-[260px] bg-gradient-to-br from-[#1E90FF] to-[#0088cc] rounded-2xl p-5 text-white shadow-lg shadow-blue-500/20 active:scale-95 transition-transform cursor-pointer relative overflow-hidden" style="text-decoration: none;">
+                                <div onclick="try{AndroidBridge.openExternalApp('https://t.me/arbraincode')}catch(e){window.open('https://t.me/arbraincode', '_blank')}" class="block snap-start shrink-0 w-[260px] bg-gradient-to-br from-[#1E90FF] to-[#0088cc] rounded-2xl p-5 text-white shadow-lg shadow-blue-500/20 active:scale-95 transition-transform cursor-pointer relative overflow-hidden" style="text-decoration: none;">
                                     <div class="absolute right-[-15px] top-[-15px] opacity-20"><i class="fa-brands fa-telegram text-8xl"></i></div>
                                     <div class="relative z-10">
                                         <div class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-xl mb-3"><i class="fa-brands fa-telegram"></i></div>
@@ -142,7 +142,7 @@
                                         <p class="text-xs text-blue-100 font-medium">Free source codes & updates</p>
                                     </div>
                                 </div>
-                                <div onclick="window.location.href='https://instagram.com/arbraincode'" class="block snap-start shrink-0 w-[260px] bg-gradient-to-br from-[#f09433] via-[#e6683c] to-[#bc1888] rounded-2xl p-5 text-white shadow-lg shadow-pink-500/20 active:scale-95 transition-transform cursor-pointer relative overflow-hidden" style="text-decoration: none;">
+                                <div onclick="try{AndroidBridge.openExternalApp('https://instagram.com/arbraincode')}catch(e){window.open('https://instagram.com/arbraincode', '_blank')}" class="block snap-start shrink-0 w-[260px] bg-gradient-to-br from-[#f09433] via-[#e6683c] to-[#bc1888] rounded-2xl p-5 text-white shadow-lg shadow-pink-500/20 active:scale-95 transition-transform cursor-pointer relative overflow-hidden" style="text-decoration: none;">
                                     <div class="absolute right-[-15px] top-[-15px] opacity-20"><i class="fa-brands fa-instagram text-8xl"></i></div>
                                     <div class="relative z-10">
                                         <div class="w-10 h-10 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-xl mb-3"><i class="fa-brands fa-instagram"></i></div>
@@ -229,7 +229,7 @@
                     <div class="space-y-3">
                         <h3 class="font-bold text-xs text-gray-500 uppercase tracking-wider px-2 mb-2">Account</h3>
                         <button onclick="window.openGuide()" class="w-full card-glass p-4 rounded-2xl flex justify-between items-center active:scale-[0.98] transition-transform"><div class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-book-open text-sm"></i></div><span class="font-semibold text-sm">How to Earn XP?</span></div><i class="fa-solid fa-chevron-right text-gray-300 dark:text-gray-600 text-sm"></i></button>
-                        <button onclick="window.switchTab('videos'); document.getElementById('video-search').value=''; window.filterVideos();" class="w-full card-glass p-4 rounded-2xl flex justify-between items-center active:scale-[0.98] transition-transform"><div class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-bookmark text-sm"></i></div><span class="font-semibold text-sm">My Favorites</span></div><i class="fa-solid fa-chevron-right text-gray-300 dark:text-gray-600 text-sm"></i></button>
+                        <button onclick="window.showFavorites()" class="w-full card-glass p-4 rounded-2xl flex justify-between items-center active:scale-[0.98] transition-transform"><div class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-bookmark text-sm"></i></div><span class="font-semibold text-sm">My Favorites</span></div><i class="fa-solid fa-chevron-right text-gray-300 dark:text-gray-600 text-sm"></i></button>
                         <h3 class="font-bold text-xs text-gray-500 uppercase tracking-wider px-2 mb-2 mt-6">Support & Info</h3>
                         <button onclick="window.openHelp()" class="w-full card-glass p-4 rounded-2xl flex justify-between items-center active:scale-[0.98] transition-transform"><div class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-life-ring text-sm"></i></div><span class="font-semibold text-sm">Help Center</span></div><i class="fa-solid fa-chevron-right text-gray-300 dark:text-gray-600 text-sm"></i></button>
                         <button onclick="window.openReport()" class="w-full card-glass p-4 rounded-2xl flex justify-between items-center active:scale-[0.98] transition-transform"><div class="flex items-center gap-4"><div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 flex items-center justify-center"><i class="fa-solid fa-bullhorn text-sm"></i></div><span class="font-semibold text-sm">Report a Problem</span></div><i class="fa-solid fa-chevron-right text-gray-300 dark:text-gray-600 text-sm"></i></button>
@@ -405,11 +405,75 @@
             }, 200);
         };
 
+        // FAVORITES LOGIC
+        window.showFavorites = () => {
+            window.switchTab('videos');
+            document.getElementById('video-search').value = '';
+            const container = document.getElementById('videos-list-container');
+            const user = window.getCurrentUser();
+            container.innerHTML = '';
+            
+            if (!user || !user.favorites || user.favorites.length === 0) {
+                container.innerHTML = '<div class="text-center py-12 text-gray-400"><i class="fa-solid fa-heart-crack text-4xl mb-3"></i><p class="font-medium text-sm">No favorites saved yet</p></div>';
+                return;
+            }
+            
+            const filtered = window.appState.videos.filter(v => user.favorites.includes(v.id));
+            filtered.forEach(v => {
+                container.innerHTML += `<div class="card-glass rounded-2xl overflow-hidden flex flex-col active:scale-[0.98] transition-transform cursor-pointer" onclick="window.openVideoModal('${v.id}')">${window.generateCardContent(v, user, true)}</div>`;
+            });
+        };
+
+        // XP HISTORY LOGIC
+        window.openXpHistory = () => {
+            const user = window.getCurrentUser();
+            const container = document.getElementById('xp-history-list');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            if(!user || !user.xpHistory || user.xpHistory.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 mt-10 text-sm font-medium">No XP history found yet.<br>Watch videos or redeem codes to earn XP!</div>';
+            } else {
+                user.xpHistory.forEach(item => {
+                    let icon = item.type === 'video' ? '<i class="fa-brands fa-youtube text-red-500"></i>' : '<i class="fa-solid fa-ticket text-brand-500"></i>';
+                    let title = item.type === 'video' ? 'Video Reward' : 'Promo Code';
+                    let desc = item.type === 'video' ? 'Watched full tutorial' : `Code: ${item.code || 'REDEEMED'}`;
+                    let dateObj = new Date(item.date);
+                    let dateStr = dateObj.toLocaleDateString('en-US', { day: 'numeric', month: 'short' });
+                    
+                    container.innerHTML += `
+                        <div class="card-glass p-4 rounded-2xl flex items-center justify-between border border-gray-100 dark:border-[#27272a]">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gray-100 dark:bg-dark-surface flex items-center justify-center text-lg shadow-sm border border-gray-200 dark:border-gray-800">
+                                    ${icon}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-sm text-gray-900 dark:text-white leading-tight">${title}</h4>
+                                    <p class="text-[11px] text-gray-500 font-medium mt-0.5">${desc} • ${dateStr}</p>
+                                </div>
+                            </div>
+                            <div class="font-extrabold text-brand-500">+${item.amount} <span class="text-[10px] text-gray-400">XP</span></div>
+                        </div>
+                    `;
+                });
+            }
+            
+            const modal = document.getElementById('modal-xp-history');
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+            setTimeout(() => { modal.classList.remove('translate-y-full'); }, 10);
+        };
+
+        window.closeXpHistory = () => {
+            const modal = document.getElementById('modal-xp-history');
+            modal.classList.add('translate-y-full');
+            setTimeout(() => { modal.classList.add('hidden'); modal.classList.remove('flex'); }, 200);
+        };
+
+        // PAYMENT LOGIC
         let currentPayXp = 0;
         let currentPayInr = 0;
 
         window.openPaymentModal = (xp, inr) => {
-            // Ab ye default browser alert nahi balki hamara naya custom modal use karega
             window.showCustomAlert("🚀 Premium XP feature is COMING SOON! We are setting up a secure payment gateway. Stay tuned!");
             return; 
         };
